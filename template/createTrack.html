@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<section class="section">
+
+    <form method="POST" action="{% url 'create_track' %}">
+    {% csrf_token %}
+    <div class="field">
+            {{ form.as_p }}
+
+        <div class="control">
+            <button type="submit" class="button is-link">Submit</button>
+        </div>
+    </div>
+</form>
+
+</section>
+
+{% endblock %}

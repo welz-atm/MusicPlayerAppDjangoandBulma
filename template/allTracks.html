@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<section class="section">
+    {% if user.is_admin %}
+    <a class="button is-primary is-small" href="{% url 'create_track' %}" >Show Modal</a>
+    {% endif %}
+
+    <table class="table is-hoverable is-fullwidth has-text-info ">
+        <thead>
+        <tr>
+            <th>Date</th>
+            <th>Title</th>
+            <th>Count</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        {% for track in tracks %}
+        <tr>
+            <td>
+                {{ track.date_posted}}
+            </td>
+            <td>
+                {{ track.title}}
+            </td>
+            <td>
+                {{ track.track_count}}
+            </td>
+            <td>
+                <div class="field is-grouped">
+
+                    <p class="control">
+                        <a href="{% url 'play_track' pk=track.pk %}" aria-label="play">
+            <span class="icon is-small">
+              <i class="fas fa-play" aria-hidden="true"></i>
+            </span>
+                        </a>
+                    </p>
+
+                    <p class="control">
+                        <a href="#" aria-label="retweet">
+            <span class="icon is-small">
+              <i class="fas fa-retweet" aria-hidden="true"></i>
+            </span>
+                        </a>
+                    </p>
+                    {% if track.is_liked %}
+                    <p class="control">
+                        <a href="{% url 'is_unlike' pk=track.pk %}" aria-label="like">
+            <span class="icon is-small">
+              <i class="fas fa-heart" aria-hidden="true"></i>
+            </span>
+                        </a>
+                    </p>
+                    {% else %}
+                    <p class="control">
+                        <a href="{% url 'is_like' pk=track.pk %}" aria-label="like">
+            <span class="icon is-small">
+              <i class="fas fa-heart-o" aria-hidden="false"></i>
+            </span>
+                        </a>
+                    </p>
+                    {% endif %}
+
+                    <p class="control">
+                        <a href="#" aria-label="trash">
+            <span class="icon is-small">
+              <i class="fas fa-trash " aria-hidden="true"></i>
+            </span>
+                        </a>
+                    </p>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</section>
+
+{% endblock %}
