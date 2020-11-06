@@ -12,6 +12,7 @@ django-crispy-forms==1.7.2
 kombu==5.0.2
 prompt-toolkit==3.0.8
 pygame==2.0.0
+python-decouple==3.3
 pytz==2020.4
 six==1.15.0
 sqlparse==0.4.1
