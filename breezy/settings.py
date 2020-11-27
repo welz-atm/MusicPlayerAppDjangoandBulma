@@ -94,7 +94,7 @@ WSGI_APPLICATION = 'breezy.wsgi.application'
 
 
 SECRET_KEY = os.getenv('SECRET_KEY')
-DEBUG = os.getenv('SECRET_KEY')
+DEBUG = os.getenv('DEBUG')
 
 DATABASES = {
     'default': {

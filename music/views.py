@@ -112,7 +112,7 @@ def unpause_track(request, pk):
 
 
 def home(request):
-    tracks = Track.objects.all().order_by('-date_posted').select_related('artiste')
+    tracks = Track.objects.all().order_by('-date_posted')
     for track in tracks:
         if track.is_playing is True:
             mixer.init()
