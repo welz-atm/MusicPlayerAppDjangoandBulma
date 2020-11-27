@@ -2,32 +2,35 @@
 {% block content %}
 
 <section class="section">
-    {% if user.is_admin %}
-    <a class="button is-primary is-small" href="{% url 'create_track' %}" >Show Modal</a>
-    {% endif %}
+
 
     <table class="table is-hoverable is-fullwidth has-text-info ">
         <thead>
         <tr>
             <th>Date</th>
+            <th>Artiste</th>
             <th>Title</th>
-            <th>Count</th>
+            <th>Number of Listen</th>
             <th>Action</th>
         </tr>
         </thead>
-        {% for track in tracks %}
+        {% for track in page_obj %}
         <tr>
             <td>
-                {{ track.date_posted}}
+                {{ track.date_posted }}
+            </td>
+            <td>
+                {{ track.artiste.display_name }}
             </td>
             <td>
                 {{ track.title}}
             </td>
             <td>
-                {{ track.track_count}}
+                {{ track.listen_count }}
             </td>
             <td>
                 <div class="field is-grouped">
+
 
                     <p class="control">
                         <a href="{% url 'play_track' pk=track.pk %}" aria-label="play">
@@ -37,43 +40,44 @@
                         </a>
                     </p>
 
-                    <p class="control">
-                        <a href="#" aria-label="retweet">
-            <span class="icon is-small">
-              <i class="fas fa-retweet" aria-hidden="true"></i>
-            </span>
-                        </a>
-                    </p>
-                    {% if track.is_liked %}
-                    <p class="control">
-                        <a href="{% url 'is_unlike' pk=track.pk %}" aria-label="like">
-            <span class="icon is-small">
-              <i class="fas fa-heart" aria-hidden="true"></i>
-            </span>
-                        </a>
-                    </p>
-                    {% else %}
-                    <p class="control">
-                        <a href="{% url 'is_like' pk=track.pk %}" aria-label="like">
-            <span class="icon is-small">
-              <i class="fas fa-heart-o" aria-hidden="false"></i>
-            </span>
-                        </a>
-                    </p>
-                    {% endif %}
 
+                    {% if user.is_admin %}
                     <p class="control">
-                        <a href="#" aria-label="trash">
+                        <a href="{% url 'delete_track' pk=track.pk %}" aria-label="trash">
             <span class="icon is-small">
               <i class="fas fa-trash " aria-hidden="true"></i>
             </span>
                         </a>
                     </p>
+                    {% endif %}
                 </div>
             </td>
         </tr>
+
         {% endfor %}
     </table>
+
+    <div class="columns is-mobile is-centered">
+        <div class="column is-half">
+            <nav class="pagination" role="navigation" aria-label="pagination">
+    <span class="pagination-list">
+        {% if page_obj.has_previous %}
+			<a class="pagination-previous" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+        {% endif %}
+
+        <span class="current">
+            {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+        </span>
+
+        {% if page_obj.has_next %}
+			<a class="pagination-next" href="?page={{ page_obj.next_page_number }}">Next page</a>
+        {% endif %}
+    </span>
+            </nav>
+        </div>
+    </div>
+
+
 </section>
 
 {% endblock %}

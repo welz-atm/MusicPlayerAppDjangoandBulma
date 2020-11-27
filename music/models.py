@@ -8,6 +8,7 @@ class Track(models.Model):
     song = models.FileField(upload_to='songs')
     date_posted = models.DateTimeField(auto_now_add=True)
     is_liked = models.BooleanField(default=False)
+    listen_count = models.PositiveIntegerField(default=0)
     is_playing = models.BooleanField(default=False)
 
     def __str__(self):

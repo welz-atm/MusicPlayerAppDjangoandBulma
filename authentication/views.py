@@ -57,8 +57,9 @@ def login_user(request):
 
 
 def logout_user(request):
-    logout(request)
-    return redirect('home')
+    if request.method == 'POST':
+        logout(request)
+        return redirect('home')
 
 
 def change_password(request):

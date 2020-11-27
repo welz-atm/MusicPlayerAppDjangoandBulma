@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import TrackForm
 from .models import Track
 from django.core.exceptions import PermissionDenied
+from django.core.paginator import Paginator
 from pygame import mixer
 
 
@@ -13,7 +14,7 @@ def create_track(request):
                 track = form.save(commit=False)
                 track.artiste = request.user
                 track.save()
-                return redirect('allTracks')
+                return redirect('home')
         else:
             form = TrackForm()
         context = {
@@ -60,9 +61,10 @@ def play_track(request, pk):
     track = get_object_or_404(Track, pk=pk)
     mixer.init()
     mixer.music.load(track.song)
-    mixer.music.set_volume(1)
+    mixer.music.set_volume(0.5)
     mixer.music.play()
     track.is_playing = True
+    track.listen_count += 1
     track.save()
     context = {
         'track': track
@@ -110,9 +112,20 @@ def unpause_track(request, pk):
 
 
 def home(request):
-    tracks = Track.objects.all().order_by('date_posted').select_related('artiste')
+    tracks = Track.objects.all().order_by('-date_posted').select_related('artiste')
+    for track in tracks:
+        if track.is_playing is True:
+            mixer.init()
+            mixer.music.load(track.song)
+            mixer.music.stop()
+            track.is_playing = False
+            track.save()
+    paginator = Paginator(tracks, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     context = {
-        'tracks': tracks
+        'page_obj': page_obj,
     }
     return render(request, 'allTracks.html', context)
 
@@ -129,4 +142,5 @@ def is_unlike(request, pk):
     track.is_liked = False
     track.save()
     return redirect('home')
+
 
