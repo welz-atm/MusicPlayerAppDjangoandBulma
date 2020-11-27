@@ -1,1 +1,1 @@
-web: gunicorn breezy.wsgi --log-file -
+web: gunicorn breezy.wsgi
