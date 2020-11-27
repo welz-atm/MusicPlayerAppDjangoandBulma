@@ -10,7 +10,6 @@ def register(request):
         form = UserCreateForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
-            user.is_listener = True
             user.save()
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             return redirect('home')
@@ -27,7 +26,6 @@ def edit_user(request):
         form = UserEditForm(request.POST, instance=request.user)
         if form.is_valid():
             user = form.save(commit=False)
-            user.is_listener = True
             user.save()
             return redirect('home')
     else:

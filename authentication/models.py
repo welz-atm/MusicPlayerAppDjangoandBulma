@@ -35,7 +35,6 @@ class CustomUser(AbstractBaseUser):
     date_created = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
-    is_listener = models.BooleanField(default=False)
 
     objects = MyUserManager()
 
