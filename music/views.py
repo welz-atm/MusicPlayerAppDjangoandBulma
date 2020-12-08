@@ -113,9 +113,27 @@ def unpause_track(request, pk):
 
 def home(request):
     tracks = Track.objects.all().order_by('-date_posted').select_related('artiste')
+    try:
+        track = Track.objects.get(is_playing=True)
+        mixer.init()
+        mixer.music.load(track.song)
+        mixer.music.stop()
+        track.is_playing = False
+        track.save()
+    except Track.DoesNotExist:
+        paginator = Paginator(tracks, 10)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        context = {
+            'page_obj': page_obj,
+        }
+        return render(request, 'allTracks.html', context)
+    paginator = Paginator(tracks, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
 
     context = {
-        'tracks': tracks,
+        'page_obj': page_obj,
     }
     return render(request, 'allTracks.html', context)
 
