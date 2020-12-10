@@ -26,6 +26,7 @@ def edit_user(request):
         form = UserEditForm(request.POST, instance=request.user)
         if form.is_valid():
             user = form.save(commit=False)
+            user.is_listener = True
             user.save()
             return redirect('home')
     else:

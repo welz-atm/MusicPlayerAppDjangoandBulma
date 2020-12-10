@@ -57,7 +57,25 @@
         {% endfor %}
     </table>
 
+    <div class="columns is-mobile is-centered">
+        <div class="column is-half">
+            <nav class="pagination" role="navigation" aria-label="pagination">
+    <span class="pagination-list">
+        {% if page_obj.has_previous %}
+			<a class="pagination-previous" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+        {% endif %}
 
+        <span class="current">
+            {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+        </span>
+
+        {% if page_obj.has_next %}
+			<a class="pagination-next" href="?page={{ page_obj.next_page_number }}">Next page</a>
+        {% endif %}
+    </span>
+            </nav>
+        </div>
+    </div>
 
 
 </section>

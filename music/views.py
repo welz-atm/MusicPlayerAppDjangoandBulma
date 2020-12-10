@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import TrackForm
 from .models import Track
 from django.core.exceptions import PermissionDenied
+from django.core.paginator import Paginator
 from pygame import mixer
 
 
@@ -111,10 +112,30 @@ def unpause_track(request, pk):
 
 
 def home(request):
+    try:
+        track = Track.objects.get(is_playing=True)
+        mixer.init()
+        mixer.music.load(track.song)
+        mixer.music.stop()
+        track.is_playing = False
+        track.save()
+    except Track.DoesNotExist:
+        tracks = Track.objects.all().order_by('-date_posted').select_related('artiste')
+        paginator = Paginator(tracks, 10)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        context = {
+            'page_obj': page_obj,
+        }
+        return render(request, 'allTracks.html', context)
     tracks = Track.objects.all().order_by('-date_posted').select_related('artiste')
+    paginator = Paginator(tracks, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
 
     context = {
-        'tracks': tracks,
+        'page_obj': page_obj,
+        'track': track
     }
     return render(request, 'allTracks.html', context)
 
