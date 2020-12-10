@@ -32,7 +32,7 @@ load_dotenv(dotenv_path=env_path)
 SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = os.getenv('DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['jazbreezy.herokuapp.com']
 
 AUTH_USER_MODEL = 'authentication.CustomUser'
 
