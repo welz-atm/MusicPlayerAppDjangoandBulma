@@ -16,6 +16,7 @@ prompt-toolkit==3.0.8
 psycopg2==2.8.6
 pygame==2.0.0
 python-decouple==3.3
+python-dotenv==0.15.0
 pytz==2020.4
 six==1.15.0
 sqlparse==0.4.1
